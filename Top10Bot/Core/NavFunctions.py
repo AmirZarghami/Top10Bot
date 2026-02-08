@@ -292,7 +292,7 @@ def navf_show_awards(log, route, stage):
     return True, "Z", "starting"#???
 
 def navf_stats(log, route, stage):
-    my_string = input("Enter the Song Name or Artist Name for which You woud Like to See the Stats: ")
+    my_string = input("Enter the Song Name or Artist Name for which You would Like to See the Stats: ")
     DFSL.print_stats(my_string)
     print("")
     MSG.press_enter()

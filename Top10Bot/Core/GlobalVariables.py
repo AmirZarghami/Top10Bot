@@ -69,7 +69,7 @@ yes_or_no_dict = {"Y": "Yes", "N": "No"}
 song_or_artist_dict = {"S": "Song", "A": "Band and Artist"}
 
 ##### STAGE COMMANDS #####
-
+"""
 routing_log_to_route_to_stage_dict = \
         {False:{"N": ["starting", "get username", "get profile info", "creating profile", "saving"], \
         "L": ["get username", "loading"],\
@@ -84,7 +84,7 @@ routing_log_to_route_to_stage_dict = \
         "X":[], \
         "Q":["quiting"], \
         "Z": ["starting"]}}
-
+"""
 not_logged_in_route_codetoname_dict = {"N": "Create a New Profile", "L": "Load an Existing Profile", \
                                        "A": "Read About this Program", "C": "Show Credits", "Q": "Quit the Program"}
 logged_in_route_codetoname_dict = {"M": "Add Monthly Entry to Profile", "W": "Add Award Entry to Profile",\

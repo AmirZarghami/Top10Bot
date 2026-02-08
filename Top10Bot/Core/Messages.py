@@ -238,7 +238,7 @@ def show_help_msgp():
     print("A or Award List, Shows the Awards for a Specific Year Based on Previous Entries.\n")
     print("G or Suggestions, Makes Suggestions for Opinionated Awards Based on Monthly Entries and an Arbitrary Scoring Matrix.\n")
     print("H or Help, Is what You are Currently Reading!\n")
-    print("F or Format, Illustrates the Acceptable Entry Formats for Monthly Entris or Award Entries")
+    print("F or Format, Illustrates the Acceptable Entry Formats for Monthly Entris or Award Entries\n")
     print("U or Update, Updates All the Profile Tables Based on Monthly and Award Entris.\n")
     print("S or Save, Saves Your Inputs and Updates and Generally Your Progress to Your Profile.\n")
     print("X or Exit, Exits Your Current Profile without Exiting the Program Entirely.\n")
