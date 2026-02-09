@@ -10,6 +10,24 @@ import BaseLevelFunctions as BLF
 import re
 from collections import defaultdict
 
+def ensure_df45_schema():
+    df4 = GV.CurrentUser.get_DF(4)
+    df5 = GV.CurrentUser.get_DF(5)
+
+    for col in ["SongFullName","SongID","EntryIDs","ArtistCount","Artists","ArtistIDs","OpAwardIDs","UnOpAwardIDs","TempAwardIDs","HighestAwardID"]:
+        if col not in df4.columns:
+            df4[col] = np.nan
+
+    for col in ["ArtistName","ArtistID","SongIDs","EntryIDs","OpAwardIDs","UnOpAwardIDs","TempAwardIDs"]:
+        if col not in df5.columns:
+            df5[col] = np.nan
+
+    GV.CurrentUser.set_DF(df4, 4)
+    GV.CurrentUser.set_DF(df5, 5)
+
+
+
+
 def create_first_DF(user):
     headers = GV.CSVFile_Headers_dict["RawUserInfo"]
     df1 = pd.DataFrame(columns=headers)

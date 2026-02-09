@@ -42,7 +42,7 @@ HejriShamsi_NtM = {1:"Farvardin", 2:"Ordibehesht", 3:"Khordad",
 
 Miladi_MtN = {"January":1, "February": 2, "March": 3,
                    "April": 4, "May": 5, "June":6,
-                   "July": 7, "Agust":8, "September": 9,
+                   "July": 7, "August":8, "September": 9,
                    "October": 10, "November":11, "December":12}
 
 Miladi_NtM = {1:"January", 2:"February", 3:"March",
@@ -141,6 +141,7 @@ class User:
         self.Cal = calendar
         self.FM = first_month
         self.V = version
+        self.NeedsUpdate = True
         self.CalCode = None
         self.CalDict = None
         self.AwardYearList = None
@@ -220,6 +221,12 @@ class User:
         self.ProbableCurrentMonth = output
         return output
     
+    def set_needs_update(self, to_what):
+        self.NeedsUpdate = to_what
+        
+    def get_needs_update(self):
+        return self.NeedsUpdate
+        
     def get_probable_current_month(self):
         self.set_probable_current_month()
         return self.ProbableCurrentMonth
@@ -270,7 +277,8 @@ class User:
         return self.Dir
         
     def set_file(self):
-        self.File = profile_directory_string_GC +"//" + self.Name + "_TOP10BOT.xlsx"
+        self.File = str(profile_directory_path_GC / f"{self.Name}_TOP10BOT.xlsx")
+        #self.File = profile_directory_string_GC +"//" + self.Name + "_TOP10BOT.xlsx"#???GPTFIX
         return self.File
         
     def set_DF(self, df, num):

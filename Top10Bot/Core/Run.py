@@ -8,11 +8,19 @@ import Messages as MSG
 import NavFunctions as NF
 import logging
 import traceback
+from pathlib import Path
+
+# Ensure Profiles directory exists
+GV.profile_directory_path_GC.mkdir(parents=True, exist_ok=True)
+
 
 logger = logging.getLogger("alpha_test_logger")
 logger.setLevel(logging.INFO)
 if not logger.handlers:
-    fh = logging.FileHandler("error_log.txt", mode="a", encoding="utf-8")
+    #fh = logging.FileHandler("error_log.txt", mode="a", encoding="utf-8")#???GPTFIX
+    log_path = Path(__file__).resolve().parent / "error_log.txt"
+    fh = logging.FileHandler(log_path, mode="a", encoding="utf-8")
+
     logger.addHandler(fh)
 
 class StateOfProgram:
@@ -23,7 +31,6 @@ class StateOfProgram:
 
 state = StateOfProgram(False, "Z", "starting") #???
 
-#??? under  parts
 map_nav_input_to_functions_dict = {(False, "Z", "starting"): NF.navf_command_starting_phase, \
                                    (False, "N", "get username"): NF.navf_get_username_check_exists_decide, \
                                    (False, "N", "get profile info"): NF.navf_get_user_info, \
@@ -50,6 +57,7 @@ map_nav_input_to_functions_dict = {(False, "Z", "starting"): NF.navf_command_sta
                                    (True, "L", "updating"): NF.navf_update_DF4_and_DF5, \
                                    (True, "L", "get input"): NF.navf_leaderboard, \
                                    (True, "T", "ask update"): NF.navf_ask_if_update_needed, \
+                                   (True, "T", "updaing"): NF.navf_update_DF4_and_DF5, \
                                    (True, "T", "get input"): NF.navf_stats, \
                                    (True, "F", "show formats"): NF.navf_show_formats, \
                                    (True, "H", "show help"): NF.navf_help, \
@@ -61,7 +69,7 @@ map_nav_input_to_functions_dict = {(False, "Z", "starting"): NF.navf_command_sta
 map_dic = map_nav_input_to_functions_dict
 
 def navigation (log, route, stage):
-    #print(f"***log={log}, route={route},stage={stage}***")#???
+    #print(f"***log={log}, route={route},stage={stage}***\n")#???
     temp_log, temp_route, temp_stage = log, route, stage
     for key in map_dic.keys():
         if (log, route, stage) == key:
@@ -69,9 +77,13 @@ def navigation (log, route, stage):
             result = func(log, route, stage)
             try:
                 temp_log, temp_route, temp_stage = result
+                return temp_log, temp_route, temp_stage
             except:
                 pass
-    return temp_log, temp_route, temp_stage
+
+    print("There was an Uninspected Problem while Trying to Navigate the Menues.\nPlease Report this as a Bug to the Developer.\n")
+    return log, "Z", "starting"
+    #return temp_log, temp_route, temp_stage
 
 
 #***** RUN *****#

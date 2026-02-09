@@ -94,7 +94,8 @@ def navf_get_user_info(log, route, stage):
     GV.CurrentUser.set_cal(cal_name)
     GV.CurrentUser.set_version(GV.software_version_GC)
     GV.CurrentUser.set_first_month (year*100 + month)
-    GV.CurrentUser.set_cal_code(GV.supported_calendars_codetoname[cal_code])
+    GV.CurrentUser.set_cal_code(cal_code)
+    #GV.CurrentUser.set_cal_code(GV.supported_calendars_codetoname[cal_code])#???GPTFIX
     print(f"Creating a Profile Named {GV.CurrentUser.Name} with the Calendar {GV.CurrentUser.Cal}.")
     print("")
     return False, "N", "creating profile"
@@ -178,7 +179,10 @@ def navf_get_entry(log, route, stage):
                 if write:
                     MLF.get_monthly_entry_tuple_add_to_DF(inputs_list_song_ID)
                     print("Entry Added to Your Profile.\n")
-                    DFSL.assign_sequential_IDs(2, "SongFullName", "SongID", "SNG0001")
+                    #DFSL.assign_sequential_IDs(2, "SongFullName", "SongID", "SNG0001")#???GPTFIX
+                    df2 = DFSL.assign_sequential_IDs(2, "SongFullName", "SongID", "SNG0001")
+                    GV.CurrentUser.set_DF(df2, 2)
+                    GV.CurrentUser.set_needs_update(True)
                     print("Updating Tables. \n")
                 else:
                     return log, "Z", "starting"
@@ -196,6 +200,7 @@ def navf_get_entry(log, route, stage):
                 write = not MLF.check_if_award_entry_exists_in_df(award_with_IDs)
                 if write:
                     DFSL.remove_repeated_awards_entry_and_update_rows_in_dataframe(award_with_IDs)
+                    GV.CurrentUser.set_needs_update(True)
                     print("Entry Added to Your Profile.\n")       
                 else:
                     return log, "Z", "starting"
@@ -207,7 +212,7 @@ def navf_get_entry(log, route, stage):
     return log, "Z", "starting"
 
 def navf_update_DF4_and_DF5(log, route, stage):
-    
+    DFSL.ensure_df45_schema()
     save = BLF.get_input_command_repeatedly_until_valid(GV.yes_or_no_dict, \
     "Due to a Relatively High Possibility of Crashing, We Highly Recommend Saving Your Progress Before Moving on. Would You Like to Save your Progress? ", \
         "Enter Your Choice Here: ", "", MSG.invalid_input_msg())
@@ -264,6 +269,7 @@ def navf_update_DF4_and_DF5(log, route, stage):
         stage = "starting"
     else:
         stage = "get input"
+    GV.CurrentUser.set_needs_update(False)
     return log, route, stage
 
 def navf_leaderboard(log, route, stage):
@@ -275,12 +281,18 @@ def navf_leaderboard(log, route, stage):
 
 
 def navf_ask_if_update_needed(log, route, stage):
-    print("\n")
-    answer = BLF.get_input_command_repeatedly_until_valid(GV.yes_or_no_dict, "Would You Like to Update The Tables Before We Proceed? \nUpdating the Tables Takes a Long Time but for Accurate Results is Highly Recommended \nSpecifically if You Have Added Entries to Your Profile Since the Last Update. ", \
-                                                 "What Do You Wish to do? ", "", MSG.invalid_input_msg())
-    if answer == "Y":
-        return log, route, "updating"
+    print("test1\n")
+    if GV.CurrentUser.get_needs_update() == True:
+        print("test2\n")
+        print("\n")
+        answer = BLF.get_input_command_repeatedly_until_valid(GV.yes_or_no_dict, "Would You Like to Update The Tables Before We Proceed? \nUpdating the Tables Takes a Long Time but for Accurate Results is Highly Recommended \nSpecifically if You Have Added Entries to Your Profile Since the Last Update. ", \
+                                             "What Do You Wish to do? ", "", MSG.invalid_input_msg())
+        if answer == "Y":
+            return log, route, "updating"
+        else:
+            return log, route, "get input"
     else:
+        print("test3")
         return log, route, "get input"
 
 def navf_song_tag_viewer(log, route, stage):
