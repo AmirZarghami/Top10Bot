@@ -16,7 +16,7 @@ def you_have_chosen_msg(choice):
     print("You Have Chosen to {choice}.\n")
 
 def wrong_format_look_help_msgi():
-    return input("Input is Not in the Correct TOP10 Format! Take a Look at Help for More Info \
+    return input("Input is Not in the Correct TOP10 Format! Take a Look at Formats for More Info \
 Press Enter to Continue. ")
 
 def type_code_msgi ():
@@ -248,3 +248,4 @@ def show_help_msgp():
     press_enter()
     
     
+
