@@ -20,6 +20,8 @@ from collections import Counter
 from collections import defaultdict
 from typing import Optional
 from typing import Any, Dict, List, Tuple
+from itertools import combinations
+from difflib import SequenceMatcher
 
 def command_starting_program(log):
     if log == False:    
@@ -114,7 +116,7 @@ def ask_if_want_to_save():
         return False
     
 def get_monthly_entry():
-    entry = FORM.strip_only_empty_or_whitespace_lines(BLF.read_multiline("Enter Your Entry Here:\n"))
+    entry = FORM.strip_only_empty_or_whitespace_lines(BLF.read_multiline("Enter Your Entry Here (Press 3 Consecutive Enter Keys when Done):\n"))
     first_line = entry.split("\n")[0]
     is_monthly = FORM.check_if_is_monthly_entry(first_line, GV.CurrentUser.get_name(), GV.CurrentUser.get_cal_dict()["MtN"].keys())
     return is_monthly, entry
@@ -137,6 +139,7 @@ def get_monthly_check_lines_validity():
             return False, entry
     else:
         return False, entry
+    return False, entry
     
 def give_songs_with_IDs_raw(entry):
     mod_month_ID = BLF.calculate_month_ID_for_monthly_entry(entry)
@@ -188,7 +191,7 @@ def get_monthly_entry_tuple_add_to_DF(entry_list_of_tuples):
         DFSL.update_cell(2, song_line, "SongID", "")
         
 def get_award_entry():
-    entry = FORM.strip_only_empty_or_whitespace_lines(BLF.read_multiline("Enter Your Entry Here:\n"))
+    entry = FORM.strip_only_empty_or_whitespace_lines(BLF.read_multiline("Enter Your Entry Here (Press 3 Consecutive Enter Keys when Done):\n"))
     first_line = entry.split("\n")[0]
     is_song_award = FORM.check_if_is_song_award_entry_first_line(first_line, GV.CurrentUser.get_name())
     if is_song_award:
@@ -295,6 +298,7 @@ def get_award_check_lines_validity():
                 return False, "not important", entry
     else:
         return False, "not important", entry
+    return False, "not important", entry
 
 def give_award_IDs(entry):
     entry = FORM.strip_only_empty_or_whitespace_lines(entry)
@@ -755,6 +759,7 @@ def function_to_view_song_tags():
         month = BLF.get_month(cal_code)
     code = BLF.calculate_modified_month_ID(year*100 + month)
     entry = BLF.read_multiline("Enter Songs to Get Corresponding Tags (Hit Enter Multiple Times to Finish): ")
+    entry = FORM.demojify_multilines(entry)
     line_by_line = entry.split("\n")
     output = []
     """🆕🎖🤘🏻(🏆🥇🥈🥉)"""
@@ -811,6 +816,7 @@ def print_leaderboard(top_n: int = 10) -> None:
 
     # --- Print df4 results ---
     top_df4 = compute_top(df4, "SongFullName")
+    #print(f"top songs are computed: {top_df4}\n")#????
     print("Top Songs:")
     for rank, (name, score) in enumerate(top_df4, start=1):
         print(f"{rank:>2}. {name} -> {score: .3f}")
@@ -891,8 +897,165 @@ def build_song_op_awards_output(year: int) -> str:
     return output
 
 
+def suggestions_top_songs(year: int) -> str:
+    Name = GV.CurrentUser.get_name()
+    rank_to_score_dict = GV.rank_to_score_suggestion_dict
+    rank_to_emoji_dict = GV.rank_to_emoji_dict
+    df4 = GV.CurrentUser.get_DF(4)
+
+    target_yy = year if year < 100 else year % 100
+
+    def split_tokens(cell: Any) -> List[str]:
+        if cell is None:
+            return []
+        try:
+            if pd.isna(cell):
+                return []
+        except Exception:
+            pass
+        s = str(cell).strip()
+        if not s:
+            return []
+        return [t.strip() for t in s.split(",") if t.strip()]
+
+    def entry_year_yy(entry: str) -> int | None:
+        if len(entry) < 6:
+            return None
+        yy = entry[4:6]
+        return int(yy) if yy.isdigit() else None
+
+    def entry_rank(entry: str) -> int | None:
+        if len(entry) < 2:
+            return None
+        rr = entry[-2:]
+        return int(rr) if rr.isdigit() else None
+
+    # --- Compute score per song row for the given year ---
+    scored_rows: List[Tuple[int, float]] = []  # (row_index, score)
+
+    for idx, row in df4.iterrows():
+        score = 0.0
+        for entry in split_tokens(row.get("EntryIDs")):
+            yy = entry_year_yy(entry)
+            if yy is None or yy != target_yy:
+                continue
+            rr = entry_rank(entry)
+            if rr is None:
+                continue
+            score += float(rank_to_score_dict.get(rr, 0))
+        scored_rows.append((idx, score))
+
+    # Sort by score desc, then by song name asc
+    scored_rows.sort(
+        key=lambda t: (
+            -t[1],
+            str(df4.loc[t[0], "SongFullName"]) if t[0] in df4.index else ""
+        )
+    )
+
+    top20 = scored_rows[:20]
+
+    # --- Build output ---
+    year_str = FORM.pad_number(year, 2)
+    output = f"Suggestions for {Name}'s Top 10 Songs of the year {year_str}\n\n"
+
+    top10 = top20[:10]
+    for rank, (idx, score) in enumerate(top10, start=1):
+        emoji = rank_to_emoji_dict.get(rank, "")
+        song_name = str(df4.loc[idx, "SongFullName"])
+        output += f"{emoji}{song_name} -> {score:.3f}\n"
+
+    if len(top20) > 10:
+        output += "\nOther Possible Nominees:\n"
+        for idx, score in top20[10:]:
+            song_name = str(df4.loc[idx, "SongFullName"])
+            output += f"{song_name} -> {score:.3f}\n"
+
+    return output
 
 
+
+def suggestions_top_artists(year: int) -> str:
+    Name = GV.CurrentUser.get_name()
+    rank_to_score_dict = GV.rank_to_score_suggestion_dict
+    rank_to_emoji_dict = GV.rank_to_emoji_dict
+    df5 = GV.CurrentUser.get_DF(5)
+
+    target_yy = year if year < 100 else (year % 100)
+
+    def split_tokens(cell: Any) -> List[str]:
+        if cell is None:
+            return []
+        try:
+            if pd.isna(cell):
+                return []
+        except Exception:
+            pass
+        s = str(cell).strip()
+        if not s:
+            return []
+        return [t.strip() for t in s.split(",") if t.strip()]
+
+    def entry_year_yy(entry: str) -> int | None:
+        if len(entry) < 6:
+            return None
+        yy = entry[4:6]
+        return int(yy) if yy.isdigit() else None
+
+    def entry_rank(entry: str) -> int | None:
+        if len(entry) < 2:
+            return None
+        rr = entry[-2:]
+        return int(rr) if rr.isdigit() else None
+
+    scored_rows: List[Tuple[int, float]] = []  # (row_index, score)
+
+    for idx, row in df5.iterrows():
+        score = 0.0
+        for entry in split_tokens(row.get("EntryIDs")):
+            yy = entry_year_yy(entry)
+            if yy is None or yy != target_yy:
+                continue
+            rr = entry_rank(entry)
+            if rr is None:
+                continue
+            score += float(rank_to_score_dict.get(rr, 0))
+        scored_rows.append((idx, score))
+
+    scored_rows.sort(
+        key=lambda t: (
+            -t[1],
+            str(df5.loc[t[0], "ArtistName"]) if t[0] in df5.index else ""
+        )
+    )
+
+    top20 = scored_rows[:20]
+
+    year_str = FORM.pad_number(year, 2)
+    output = f"Suggestions for {Name}'s Top 10 Bands or Artists of the year {year_str}\n\n"
+
+    top10 = top20[:10]
+    for rank, (idx, score) in enumerate(top10, start=1):
+        emoji = rank_to_emoji_dict.get(rank, "")
+        artist_name = str(df5.loc[idx, "ArtistName"])
+        output += f"{emoji}{artist_name} -> {score:.3f}\n"
+
+    if len(top20) > 10:
+        output += "\nOther Possible Nominees:\n"
+        for idx, score in top20[10:]:
+            artist_name = str(df5.loc[idx, "ArtistName"])
+            output += f"{artist_name} -> {score:.3f}\n"
+
+    return output
+
+
+
+
+
+
+
+
+"""
 def suggestions_top_songs(year: int) -> None:
     # --- hardcoded inputs (replace with your real ones) ---
     Name = GV.CurrentUser.get_name()
@@ -1057,6 +1220,9 @@ def suggestions_top_artists(year: int) -> str:
             output += f"{artist_name}\n"
 
     return output
+"""
+
+
 
 def build_song_most_apps_output(year: int) -> str:
     rank_to_emoji_dict = GV.rank_to_emoji_dict
@@ -1528,10 +1694,10 @@ def see_awards():
     mod_year = BLF.calculate_modified_year(year)
     year_list = GV.CurrentUser.get_award_year_list()
     if mod_year not in year_list:
-        print(f"There was No Awards Found for the year {yearstr}. This Might Happen for the Following Reasons:\
--You Haven't Entered any Entries for the year {yearstr} \
--You Haven't Entered the Opinionated Awards for the year {yearstr} \
--Your Tables Have not been Properly Updated Before Checking for Awards \
+        print(f"There was No Awards Found for the year {yearstr}. This Might Happen for the Following Reasons:\n\
+-You Haven't Entered any Entries for the year {yearstr}\n\
+-You Haven't Entered the Opinionated Awards for the year {yearstr}\n\
+-Your Tables Have Not been Properly Updated Before Checking for Awards\n\
               ")
         return False
     else:
@@ -1547,5 +1713,42 @@ def see_awards():
         #???
         return True
 
+
+
+def find_similar_values():
+    print("Finding Similaries:\n")
+
+    df4 = GV.CurrentUser.get_DF(4)
+    df5 = GV.CurrentUser.get_DF(5)
+
+    def similarity(a: str, b: str) -> float:
+        return SequenceMatcher(None, a.lower().strip(), b.lower().strip()).ratio() * 100
+
+    def print_similar_pairs(df: pd.DataFrame, column_name: str, threshold: float = 85.0):
+
+        values = (
+            df[column_name]
+            .dropna()
+            .astype(str)
+            .str.strip()
+            .tolist()
+        )
+
+        print(f"\nSimilar values in {column_name}\n")
+        print("-" * 70)
+
+        found = False
+        for v1, v2 in combinations(values, 2):
+            score = similarity(v1, v2)
+            if score >= threshold:
+                print(f"{v1:<30} | {v2:<30} | Similarity: {score:.2f}%")
+                print()  # empty line between matches
+                found = True
+
+        if not found:
+            print(f"No pairs found with similarity >= {threshold}%")
+
+    print_similar_pairs(df4, "SongFullName", threshold=85.0)
+    print_similar_pairs(df5, "ArtistName", threshold=70.0)
 
 

@@ -16,7 +16,7 @@ def you_have_chosen_msg(choice):
     print("You Have Chosen to {choice}.\n")
 
 def wrong_format_look_help_msgi():
-    return input("Input is Not in the Correct TOP10 Format! Take a Look at Formats for More Info \
+    return input("Input is Not in the Correct TOP10 Format! Take a Look at the Formats for More Info \
 Press Enter to Continue. ")
 
 def type_code_msgi ():
@@ -237,6 +237,7 @@ def show_help_msgp():
     print("V or View, Shows the Tag Corresponding to a Song Based on Previous Entries.\n")
     print("A or Award List, Shows the Awards for a Specific Year Based on Previous Entries.\n")
     print("G or Suggestions, Makes Suggestions for Opinionated Awards Based on Monthly Entries and an Arbitrary Scoring Matrix.\n")
+    print("C or Check Similarities, Find All Similarities in the Inputs in Order to Make Sure there are No Mistakes or Typos in the Entries.\n")
     print("H or Help, Is what You are Currently Reading!\n")
     print("F or Format, Illustrates the Acceptable Entry Formats for Monthly Entris or Award Entries\n")
     print("U or Update, Updates All the Profile Tables Based on Monthly and Award Entris.\n")
@@ -248,4 +249,3 @@ def show_help_msgp():
     press_enter()
     
     
-

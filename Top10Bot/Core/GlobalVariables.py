@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 This Module Contains Global Variables Such as Constants, Dicts and Lists
 
@@ -70,28 +69,13 @@ yes_or_no_dict = {"Y": "Yes", "N": "No"}
 song_or_artist_dict = {"S": "Song", "A": "Band and Artist"}
 
 ##### STAGE COMMANDS #####
-"""
-routing_log_to_route_to_stage_dict = \
-        {False:{"N": ["starting", "get username", "get profile info", "creating profile", "saving"], \
-        "L": ["get username", "loading"],\
-        "Q": ["quiting"], \
-        "Z": ["starting"]}, \
-        True: {"M":[], \
-        "W":[], \
-        "H":[], \
-        "V":[], \
-        "A":[], \
-        "S":[], \
-        "X":[], \
-        "Q":["quiting"], \
-        "Z": ["starting"]}}
-"""
+
 not_logged_in_route_codetoname_dict = {"N": "Create a New Profile", "L": "Load an Existing Profile", \
                                        "A": "Read About this Program", "C": "Show Credits", "Q": "Quit the Program"}
 logged_in_route_codetoname_dict = {"M": "Add Monthly Entry to Profile", "W": "Add Award Entry to Profile",\
                                    "L": "See LeaderBoard", "T": "Show Stats",\
                                    "V": "View Tag for a Song", "A": "Show Awards List", "G": "Suggest Opinionated Awards", \
-                                   "H": "Help", "F": "See Input Format", \
+                                   "C": "Check Similarities", "H": "Help", "F": "See Input Format", \
                                    "U": "Update Tables", "S": "Save Progress to Profile", "X": "Exit Current Profile", "Q": "Quit the Program" }
 
 routing_log_to_route_to_name_dict = {False: not_logged_in_route_codetoname_dict, True: logged_in_route_codetoname_dict}
@@ -321,13 +305,6 @@ class User:
         # Reads every sheet into a dict of DataFrames
         dfs_dict = pd.read_excel(file_path, sheet_name=None)
         self.set_DFs(list(dfs_dict.values()))
-        """
-        print ("DF1: ", self.DF1) #???
-        print ("DF2: ", self.DF2) #???
-        print ("DF3: ", self.DF3) #???
-        print ("DF4: ", self.DF4) #???
-        print ("DF5: ", self.DF5) #???
-        """
         
     def load_basic_values_from_DF1(self):
         self.set_first_month(self.DF1.iloc[0, 1])

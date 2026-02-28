@@ -53,6 +53,8 @@ def navf_command_starting_phase(log, route, stage):
         if route == "W":
             stage = "get and check and add to df"
             return log, route, stage
+        if route == "C":
+            return log, route, "similarity finder"
         if route == "H":
             return log, route, "show help"
         if route == "F":
@@ -274,16 +276,14 @@ def navf_update_DF4_and_DF5(log, route, stage):
 
 def navf_leaderboard(log, route, stage):
     print("")
-    MLF.print_leaderboard(25)
+    MLF.print_leaderboard(50)
     print("")
     MSG.press_enter()
     return log, "Z", "starting"
 
 
 def navf_ask_if_update_needed(log, route, stage):
-    print("test1\n")
     if GV.CurrentUser.get_needs_update() == True:
-        print("test2\n")
         print("\n")
         answer = BLF.get_input_command_repeatedly_until_valid(GV.yes_or_no_dict, "Would You Like to Update The Tables Before We Proceed? \nUpdating the Tables Takes a Long Time but for Accurate Results is Highly Recommended \nSpecifically if You Have Added Entries to Your Profile Since the Last Update. ", \
                                              "What Do You Wish to do? ", "", MSG.invalid_input_msg())
@@ -292,7 +292,6 @@ def navf_ask_if_update_needed(log, route, stage):
         else:
             return log, route, "get input"
     else:
-        print("test3")
         return log, route, "get input"
 
 def navf_song_tag_viewer(log, route, stage):
@@ -324,5 +323,9 @@ def navf_see_awards(log, route, stage):
     MSG.press_enter()
     return log, "Z", "starting"
     
-    
+
+def navf_similarity_finder(log, route, stage):
+    MLF.find_similar_values()
+    MSG.press_enter()
+    return log, "Z", "starting"
 

@@ -59,6 +59,7 @@ map_nav_input_to_functions_dict = {(False, "Z", "starting"): NF.navf_command_sta
                                    (True, "T", "ask update"): NF.navf_ask_if_update_needed, \
                                    (True, "T", "updaing"): NF.navf_update_DF4_and_DF5, \
                                    (True, "T", "get input"): NF.navf_stats, \
+                                   (True, "C", "similarity finder"): NF.navf_similarity_finder, \
                                    (True, "F", "show formats"): NF.navf_show_formats, \
                                    (True, "H", "show help"): NF.navf_help, \
                                    (True, "U", "updating"): NF.navf_update_DF4_and_DF5, \

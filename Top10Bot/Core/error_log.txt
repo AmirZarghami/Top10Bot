@@ -1,0 +1,121 @@
+Error in navigation step:
+Traceback (most recent call last):
+  File "d:\important stuff\top10bot\core\run.py", line 100, in <module>
+    state.log, state.route, state.stage = navigation(state.log, state.route, state.stage)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\important stuff\top10bot\core\run.py", line 77, in navigation
+    result = func(log, route, stage)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Important Stuff\Top10Bot\Core\NavFunctions.py", line 193, in navf_get_entry
+    is_award, entry_type, entry = MLF.get_award_check_lines_validity()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: cannot unpack non-iterable NoneType object
+
+Error in navigation step:
+Traceback (most recent call last):
+  File "d:\important stuff\top10bot\core\run.py", line 101, in <module>
+    state.log, state.route, state.stage = navigation(state.log, state.route, state.stage)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\important stuff\top10bot\core\run.py", line 78, in navigation
+    result = func(log, route, stage)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Important Stuff\Top10Bot\Core\NavFunctions.py", line 329, in navf_similarity_finder
+    MSG.enter_something_msgi()
+TypeError: enter_something_msgi() missing 1 required positional argument: 'entry'
+
+Error in navigation step:
+Traceback (most recent call last):
+  File "d:\important stuff\top10bot\core\run.py", line 101, in <module>
+    state.log, state.route, state.stage = navigation(state.log, state.route, state.stage)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\important stuff\top10bot\core\run.py", line 78, in navigation
+    result = func(log, route, stage)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Important Stuff\Top10Bot\Core\NavFunctions.py", line 329, in navf_similarity_finder
+    MSG.enter_something_msgi()
+TypeError: enter_something_msgi() missing 1 required positional argument: 'entry'
+
+Error in navigation step:
+Traceback (most recent call last):
+  File "d:\important stuff\top10bot\core\run.py", line 101, in <module>
+    state.log, state.route, state.stage = navigation(state.log, state.route, state.stage)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\important stuff\top10bot\core\run.py", line 78, in navigation
+    result = func(log, route, stage)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Important Stuff\Top10Bot\Core\NavFunctions.py", line 329, in navf_similarity_finder
+    MSG.enter_something_msgi()
+TypeError: enter_something_msgi() missing 1 required positional argument: 'entry'
+
+Error in navigation step:
+Traceback (most recent call last):
+  File "d:\important stuff\top10bot\core\run.py", line 101, in <module>
+    state.log, state.route, state.stage = navigation(state.log, state.route, state.stage)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\important stuff\top10bot\core\run.py", line 78, in navigation
+    result = func(log, route, stage)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Important Stuff\Top10Bot\Core\NavFunctions.py", line 329, in navf_similarity_finder
+    MSG.enter_something_msgi()
+TypeError: enter_something_msgi() missing 1 required positional argument: 'entry'
+
+Error in navigation step:
+Traceback (most recent call last):
+  File "d:\important stuff\top10bot\core\run.py", line 101, in <module>
+    state.log, state.route, state.stage = navigation(state.log, state.route, state.stage)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\important stuff\top10bot\core\run.py", line 78, in navigation
+    result = func(log, route, stage)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Important Stuff\Top10Bot\Core\NavFunctions.py", line 329, in navf_similarity_finder
+    MSG.enter_something_msgi()
+TypeError: enter_something_msgi() missing 1 required positional argument: 'entry'
+
+Error in navigation step:
+Traceback (most recent call last):
+  File "d:\important stuff\top10bot\core\run.py", line 101, in <module>
+    state.log, state.route, state.stage = navigation(state.log, state.route, state.stage)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\important stuff\top10bot\core\run.py", line 78, in navigation
+    result = func(log, route, stage)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Important Stuff\Top10Bot\Core\NavFunctions.py", line 329, in navf_similarity_finder
+    MSG.enter_something_msgi()
+TypeError: enter_something_msgi() missing 1 required positional argument: 'entry'
+
+Error in navigation step:
+Traceback (most recent call last):
+  File "d:\important stuff\top10bot\core\run.py", line 101, in <module>
+    state.log, state.route, state.stage = navigation(state.log, state.route, state.stage)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\important stuff\top10bot\core\run.py", line 78, in navigation
+    result = func(log, route, stage)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Important Stuff\Top10Bot\Core\NavFunctions.py", line 329, in navf_similarity_finder
+    MSG.enter_something_msgi()
+TypeError: enter_something_msgi() missing 1 required positional argument: 'entry'
+
+Error in navigation step:
+Traceback (most recent call last):
+  File "d:\important stuff\top10bot\core\run.py", line 101, in <module>
+    state.log, state.route, state.stage = navigation(state.log, state.route, state.stage)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\important stuff\top10bot\core\run.py", line 78, in navigation
+    result = func(log, route, stage)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Important Stuff\Top10Bot\Core\NavFunctions.py", line 329, in navf_similarity_finder
+    MSG.enter_something_msgi()
+TypeError: enter_something_msgi() missing 1 required positional argument: 'entry'
+
+Error in navigation step:
+Traceback (most recent call last):
+  File "d:\important stuff\top10bot\core\run.py", line 101, in <module>
+    state.log, state.route, state.stage = navigation(state.log, state.route, state.stage)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\important stuff\top10bot\core\run.py", line 78, in navigation
+    result = func(log, route, stage)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Important Stuff\Top10Bot\Core\NavFunctions.py", line 330, in navf_similarity_finder
+    MSG.enter_something_msgi()
+TypeError: enter_something_msgi() missing 1 required positional argument: 'entry'
+
